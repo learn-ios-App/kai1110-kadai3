@@ -5,8 +5,8 @@ struct ContentView: View {
     @State var textNumber1 = ""
     @State var textNumber2 = ""
     
-    @State private var intNumber1 = 0
-    @State private var intNumber2 = 0
+    @State private var signedNumber1 = 0
+    @State private var signedNumber2 = 0
     
     @State var signNumber1 = false
     @State var signNumber2 = false
@@ -16,31 +16,36 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 30) {
             HStack(spacing: 30) {
-                textFieldView(textNumber: $textNumber1)
-                textFieldView(textNumber: $textNumber2)
+                TextFieldView(textNumber: $textNumber1)
+                TextFieldView(textNumber: $textNumber2)
             }
             HStack(spacing: 30) {
-                toggleView(signNumber: $signNumber1)
-                toggleView(signNumber: $signNumber2)
+                ToggleView(signNumber: $signNumber1)
+                ToggleView(signNumber: $signNumber2)
             }
-            
-            
+
             HStack(spacing: 30) {
-                Text("\(intNumber1)")
+                Text("\(signedNumber1)")
                 Image(systemName: "plus")
-                Text("\(intNumber2)")
+                Text("\(signedNumber2)")
             }
             
             Button(action: {
-                intNumber1 = parseNumber(number: textNumber1)
+                let number1 = parseNumber(number: textNumber1)
                 if signNumber1 {
-                    intNumber1 *= -1
+                    signedNumber1 = -number1
+                } else {
+                    signedNumber1 = number1
                 }
-                intNumber2 = parseNumber(number: textNumber2)
+
+                let number2 = parseNumber(number: textNumber2)
                 if signNumber2 {
-                    intNumber2 *= -1
+                    signedNumber2 = -number2
+                } else {
+                    signedNumber2 = number2
                 }
-                resultNumber = intNumber1 + intNumber2
+
+                resultNumber = signedNumber1 + signedNumber2
             }) {
                 Text("計算")
             }
@@ -52,7 +57,7 @@ struct ContentView: View {
     }
 }
 
-struct textFieldView: View {
+struct TextFieldView: View {
     @Binding var textNumber: String
     
     var body: some View {
@@ -65,7 +70,7 @@ struct textFieldView: View {
     }
 }
 
-struct toggleView: View {
+struct ToggleView: View {
     @Binding var signNumber: Bool
     
     var body: some View {
